@@ -84,8 +84,9 @@ public class Main {
         return primaryDiagonal || secondaryDiagonal;
     }
 
-    public static boolean checkWinner(boolean param, boolean param1, boolean param2) {
-        return param || param1 || param2;
+    public static boolean checkWinner(char[][] array, char s) {
+        return checkHorizontal(array, s) || checkVertical(array, s) ||
+                checkDiagonal(array, s);
     }
 
     public static boolean checkDraw(char[][] array) {
@@ -139,8 +140,7 @@ public class Main {
                 }
                 changeSymbol(number, currentSymbol, board);
                 printBoard(board);
-                if (checkWinner(checkHorizontal(board, currentSymbol), checkVertical(board, currentSymbol),
-                        checkDiagonal(board, currentSymbol))) {
+                if (checkWinner(board, currentSymbol)) {
                     System.out.println(currentPlayer + " is winner.");
                     winner = false;
                 } else if (checkDraw(board)) {
