@@ -3,44 +3,44 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void printBoard(char[][] array) {
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array[i].length; j++) {
-                if (array[i][j] == '\0') {
+    private static void printBoard(char[][] array) {
+        for (int row = 0; row < array.length; row++) {
+            for (int column = 0; column < array[row].length; column++) {
+                if (array[row][column] == '\0') {
                     System.out.print("   ");
                 } else {
-                    System.out.print(" " + array[i][j] + " ");
+                    System.out.print(" " + array[row][column] + " ");
                 }
-                if (j < array[i].length - 1) {
+                if (column < array[row].length - 1) {
                     System.out.print("|");
                 }
             }
             System.out.println();
-            if (i < array.length - 1) {
+            if (row < array.length - 1) {
                 System.out.println("-----------");
             }
         }
         System.out.println();
     }
 
-    public static boolean checkField(int number, char[][] array) {
+    private static boolean checkIfFieldIsEmpty(int number, char[][] array) {
         int row = (number - 1) / array.length;
         int column = (number - 1) % array.length;
         return array[row][column] == '\0';
     }
 
-    public static void changeSymbol(int number, char param3, char[][] array) {
+    private static void markFieldWithSymbol(int number, char param3, char[][] array) {
         int row = (number - 1) / array.length;
         int column = (number - 1) % array.length;
         array[row][column] = param3;
 
     }
 
-    public static boolean checkHorizontal(char[][] array, char s) {
+    private static boolean checkHorizontal(char[][] array, char s) {
         for (char[] rows : array) {
             int count = 0;
-            for (char cell : rows) {
-                if (cell == s) {
+            for (char field : rows) {
+                if (field == s) {
                     count++;
                 }
                 if (count == array[0].length) {
@@ -51,7 +51,7 @@ public class Main {
         return false;
     }
 
-    public static boolean checkVertical(char[][] array, char s) {
+    private static boolean checkVertical(char[][] array, char s) {
         for (int i = 0; i < array[0].length; i++) {
             int count = 0;
             for (char[] row : array) {
@@ -66,7 +66,7 @@ public class Main {
         return false;
     }
 
-    public static boolean checkDiagonal(char[][] array, char s) {
+    private static boolean checkDiagonal(char[][] array, char s) {
         boolean primaryDiagonal = true;
         for (int i = 0; i < array.length; i++) {
             if (array[i][i] != s) {
@@ -84,22 +84,21 @@ public class Main {
         return primaryDiagonal || secondaryDiagonal;
     }
 
-    public static boolean checkWinner(char[][] array, char s) {
+    private static boolean checkWinner(char[][] array, char s) {
         return checkHorizontal(array, s) || checkVertical(array, s) ||
                 checkDiagonal(array, s);
     }
 
-    public static boolean checkDraw(char[][] array) {
+    private static boolean checkDraw(char[][] array) {
         for (char[] rows : array) {
-            for (int cell : rows) {
-                if (cell == '\0') {
+            for (int field : rows) {
+                if (field == '\0') {
                     return false;
                 }
             }
         }
         return true;
     }
-
 
     public static void main(String[] args) {
 
@@ -134,11 +133,11 @@ public class Main {
                     System.out.println("Invalid input.");
                     continue;
                 }
-                if (!checkField(number, board)) {
-                    System.out.println("Cell is not empty!");
+                if (!checkIfFieldIsEmpty(number, board)) {
+                    System.out.println("Field is not empty!");
                     continue;
                 }
-                changeSymbol(number, currentSymbol, board);
+                markFieldWithSymbol(number, currentSymbol, board);
                 printBoard(board);
                 if (checkWinner(board, currentSymbol)) {
                     System.out.println(currentPlayer + " is winner.");
@@ -147,6 +146,7 @@ public class Main {
                     System.out.println("It's a draw! End of the game.");
                     winner = false;
                 }
+                // swap players
                 player1 = player2;
                 player2 = currentPlayer;
                 symbol1 = symbol2;
